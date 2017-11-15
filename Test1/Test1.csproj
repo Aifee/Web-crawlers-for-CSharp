@@ -41,11 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Example\NodeClassFilterExample.cs" />
+    <Compile Include="Example\OrFilterExample.cs" />
+    <Compile Include="Example\PageUtils.cs" />
+    <Compile Include="Example\StringFilterExample.cs" />
+    <Compile Include="Example\TagNameFilterExample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HtmlParser2003\HtmlParser2003.csproj">
+      <Project>{f973b917-f1d1-4707-80dc-6f9b05636b47}</Project>
+      <Name>HtmlParser2003</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
