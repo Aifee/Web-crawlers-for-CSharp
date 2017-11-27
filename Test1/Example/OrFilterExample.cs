@@ -26,7 +26,7 @@ namespace Test1.Example
     {
         public void Start()
         {
-            String url = "http://www.baidu.com/";
+            String url = "http://tools.2345.com/frame/black/list/1";
 
             HtmlPage page = PageUtils.LoadPage(url, Encoding.UTF8);
             if (page != null)

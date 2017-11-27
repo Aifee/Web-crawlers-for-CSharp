@@ -29,33 +29,103 @@ namespace Test1.Example
         /// </summary>
         public void Start()
         {
-            String url = "https://www.baidu.com/";
+            String url = "http://tools.2345.com/frame/black/list/1";
 
-            HtmlPage page = PageUtils.LoadPage(url, Encoding.UTF8);
+            HtmlPage page = PageUtils.LoadPage(url, Encoding.GetEncoding("gb2312"));
+        //    if (page != null)
+        //    {
+        //        //获取页面中的<a href='xxx' [属性]>格式的链接
+        //        NodeList nodelist = page.Body;
+        //        //过滤页面中的链接标签
+        //        NodeFilter filter = new TagNameFilter("li");
+        //        nodelist = nodelist.ExtractAllNodesThatMatch(filter, true);
+        //        int count = nodelist.Size();
+        //        for (int i = 0; i < count; i++)
+        //        {
+        //            Bullet nullet = (Bullet)nodelist.ElementAt(i);
+
+        //            for (int j = 0; j < nullet.ChildCount; j++)
+        //            {
+        //                ATag div = (ATag)nullet.ChildAt(j);
+        //                Console.WriteLine(div.StringText);
+        //            }
+
+        //            Console.WriteLine("nullet xml :" + nullet.ToHtml());
+        //        }
+
+
+        //        filter = new TagNameFilter("img");
+        //        nodelist = nodelist.ExtractAllNodesThatMatch(filter, true);
+        //        count = nodelist.Size();
+        //        for (int i = 0; i < count; i++)
+        //        {
+        //            ImageTag node = (ImageTag)nodelist.ElementAt(i);
+        //            Console.WriteLine("ImageTag ImageURL :" + node.ImageURL);
+        //        }
+
+        //        filter = new TagNameFilter("Tag");
+        //        nodelist = nodelist.ExtractAllNodesThatMatch(filter, true);
+        //        count = nodelist.Size();
+        //        for (int i = 0; i < count; i++)
+        //        {
+        //            INode node = (INode)nodelist.ElementAt(i);
+        //            Console.WriteLine("INode html :" + node.ToHtml());
+        //        }
+        //    }
             if (page != null)
             {
-                //获取页面中的<a href='xxx' [属性]>格式的链接
                 NodeList nodelist = page.Body;
-                //过滤页面中的链接标签
-                NodeFilter filter = new TagNameFilter("a");
-                nodelist = nodelist.ExtractAllNodesThatMatch(filter, true);
-                int count = nodelist.Size();
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < nodelist.Count; i++)
                 {
-                    ATag node = (ATag)nodelist.ElementAt(i);
-                    Console.WriteLine("ATag link :" + node.Link);
-                }
+                    RecursionHtmlNode(nodelist[i], false);
+                }  
+            }
 
 
-                filter = new TagNameFilter("img");
-                nodelist = nodelist.ExtractAllNodesThatMatch(filter, true);
-                count = nodelist.Size();
-                for (int i = 0; i < count; i++)
+
+        }
+        private void RecursionHtmlNode(INode htmlNode, bool siblingRequired)
+        {
+            if (htmlNode == null)
+                return;
+
+            if (htmlNode is ITag)
+            {
+                ITag tag = (htmlNode as ITag);
+                if (!tag.IsEndTag())
                 {
-                    ImageTag node = (ImageTag)nodelist.ElementAt(i);
-                    Console.WriteLine("ImageTag ImageURL :" + node.ImageURL);
+                    string nodeString = tag.TagName;
+                    if (tag.Attributes != null && tag.Attributes.Count > 0)
+                    {
+                        if (tag.Attributes["ID"] != null)
+                        {
+                            nodeString = nodeString + " { id=\"" + tag.Attributes["ID"].ToString() + "\" }";
+                            Console.WriteLine("nodeString:" + nodeString);
+                        }
+                        if (tag.Attributes["HREF"] != null)
+                        {
+                            nodeString = nodeString + " { href=\"" + tag.Attributes["HREF"].ToString() + "\" }";
+                            Console.WriteLine("nodeString:" + nodeString);
+                        }
+                    }
                 }
             }
+            if (htmlNode.Children != null && htmlNode.Children.Count > 0)
+            {
+                RecursionHtmlNode(htmlNode.FirstChild, true);
+            }
+
+            //the sibling nodes  
+            if (siblingRequired)
+            {
+                INode sibling = htmlNode.NextSibling;
+                while (sibling != null)
+                {
+                    this.RecursionHtmlNode(sibling, false);
+                    sibling = sibling.NextSibling;
+                    Console.WriteLine("sibling:" + sibling);
+                }
+            }  
         }
     }
 }

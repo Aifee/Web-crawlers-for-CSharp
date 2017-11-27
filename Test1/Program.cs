@@ -15,7 +15,8 @@ namespace Test1
             //example.Start();
             //TagNameFilterExample example = new TagNameFilterExample();
             //StringFilterExample example = new StringFilterExample();
-            OrFilterExample example = new OrFilterExample();
+            //OrFilterExample example = new OrFilterExample();
+            XPathExample example = new XPathExample();
             example.Start();
 
             Console.WriteLine("按任意键退出...");
